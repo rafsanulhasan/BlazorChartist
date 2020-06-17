@@ -1,24 +1,46 @@
 ﻿@page "/"
 
 <h1>Blazor Chartist</h1>
-<input type="checkbox" @bind="showTrumpTweets" />
+<button class="btn btn-warning" @onclick="RemoveDataPoint">Remove DataPoint</button>
+<button class="btn btn-primary" @onclick="AddDataPoint">Add DataPoint</button>
 
-<Chart Type="ChartType.Bar" Labels="@labels" title="Oil Prices">
+<!--<Chart Type="ChartType.Bar" Labels="@labels" title="Oil Prices">
     <Series Name="Oil Prices" Values="@oilPrices" />
     @if (showTrumpTweets)
     {
         <Series Name="Trump Tweets" Values="@trumpTweets" />
     }
-</Chart>
+</Chart>-->
 
-<Chart Type="ChartType.Line" Labels="@labels">
-    <Series Name="Oil Prices" Values="@oilPrices" />
+<Chart Type="ChartType.Line" Labels="@labels" Options="@options">
+    <Series Name="Quadratic Complexity" Values="@growth" />
 </Chart>
 
 @code {
     private bool showTrumpTweets = true;
-    private static string[] labels = new[] { "Jan", "Feb", "Mar", "Apr", "May", "Jun" };
+    //private static string[] labels = new[] { "Jan", "Feb", "Mar", "Apr", "May", "Jun" };
+    private static List<string> labels = new List<string>() { "1", "2", "3", "4", "5", "6" };
     private static double[] oilPrices = new double[] { 51, 55, 88, 52, 51, 54 };
     private static double[] trumpTweets = new double[] {75, 78, 62, 79, 84, 86 };
+    private static List<double> growth = new List<double>() { 1, 4, 9, 16, 25, 36 };
+
+    private Options options = new Options() { Width = 700, Height = 700 };
+
+    private void AddDataPoint()
+    {
+        int xValue = labels.Count + 1;
+        int yValue = xValue * xValue;
+        labels.Add(xValue.ToString());
+        growth.Add(yValue);
+    }
+
+    private void RemoveDataPoint()
+    {
+        if (labels.Count > 0)
+        {
+            labels.RemoveAt(labels.Count - 1);
+            growth.RemoveAt(growth.Count - 1);
+        }
+    }
 }
 

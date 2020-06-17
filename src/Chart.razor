@@ -1,4 +1,4 @@
-<div @ref="elem" class="ct-chart">
+<div @ref="elem" class="ct-chart" @attributes="@ExtraAttributes">
     TODO: Implement chartist.js creation of a chart
 </div>
 
@@ -15,6 +15,7 @@
     [Parameter] public ChartType Type {get; set; }
     [Parameter] public ChartData Data { get; set; } = new ChartData();
     [Parameter] public IEnumerable<string> Labels { get; set; }
+    [Parameter(CaptureUnmatchedValues = true)] public Dictionary<string, object> ExtraAttributes { get; set; }
   
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {

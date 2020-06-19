@@ -1,46 +1,134 @@
 ﻿@page "/"
 
-<h1>Blazor Chartist</h1>
-<button class="btn btn-warning" @onclick="RemoveDataPoint">Remove DataPoint</button>
-<button class="btn btn-primary" @onclick="AddDataPoint">Add DataPoint</button>
-
-<!--<Chart Type="ChartType.Bar" Labels="@labels" title="Oil Prices">
-    <Series Name="Oil Prices" Values="@oilPrices" />
-    @if (showTrumpTweets)
-    {
-        <Series Name="Trump Tweets" Values="@trumpTweets" />
-    }
-</Chart>-->
-
-<Chart Type="ChartType.Line" Labels="@labels" Options="@options">
-    <Series Name="Quadratic Complexity" Values="@growth" />
-</Chart>
+<h1>Asymptotic Behaviour</h1>
+<div class="row">
+    <div class="col-md-12 col-lg-4">
+        <input type="checkbox" @bind="showLogarithmic" /> Show Logarithmic &nbsp;
+        <input type="checkbox" @bind="showLinear" /> Show Linear &nbsp;
+        <input type="checkbox" @bind="shownLogN" /> Show nLog(n) &nbsp;
+        <input type="checkbox" @bind="showQuadratic" /> Show Quadratic &nbsp; 
+        <input type="checkbox" @bind="showCubic" /> Show Cubic &nbsp;
+        <input type="checkbox" @bind="showTwoToN" /> Show 2^n &nbsp; 
+        <input type="checkbox" @bind="showFactorial" /> Show Factorial &nbsp;
+        <br />
+    </div>
+    <div class="col-md-12 col-lg-8">
+        <div class="row">
+            <Chart Type="ChartType.Line" Labels="@labels" Options="@options" class="ct-chart ct-minor-sixth">
+                @if (showQuadratic)
+                {
+                    <Series Name="Quadratic Complexity" Values="@quadratic" />
+                }
+                @if (showLinear)
+                {
+                    <Series Name="Linear Complexity" Values="@linear" />
+                }
+                @if (showLogarithmic)
+                {
+                    <Series Name="Logarithmic Complexity" Values="@logN" />
+                }
+                @if (shownLogN)
+                {
+                    <Series Name="nLogN Complexity" Values="@nLogN" />
+                }
+                @if (showTwoToN)
+                {
+                    <Series Name="2^n Complexity" Values="@twoToN" />
+                }
+                @if (showFactorial)
+                {
+                    <Series Name="2^n Complexity" Values="@factorial" />
+                }
+                @if (showCubic)
+                {
+                    <Series Name="Cubic Complexity" Values="@cubic" />
+                }
+            </Chart>
+        </div>
+        <div class="row">
+            <button class="btn btn-warning" @onclick="RemoveDataPoint">Remove Data Point</button> &nbsp;
+            <button class="btn btn-primary" @onclick="AddDataPoint">Add Data Point</button>
+        </div>
+    </div>
+</div>
 
 @code {
-    private bool showTrumpTweets = true;
-    //private static string[] labels = new[] { "Jan", "Feb", "Mar", "Apr", "May", "Jun" };
-    private static List<string> labels = new List<string>() { "1", "2", "3", "4", "5", "6" };
-    private static double[] oilPrices = new double[] { 51, 55, 88, 52, 51, 54 };
-    private static double[] trumpTweets = new double[] {75, 78, 62, 79, 84, 86 };
-    private static List<double> growth = new List<double>() { 1, 4, 9, 16, 25, 36 };
+    private const int xLimit = 10;
+    private const int width = 700;
+    private const int height = 700;
 
-    private Options options = new Options() { Width = 700, Height = 700 };
+    private bool showQuadratic = true;
+    private bool showCubic = false;
+    private bool showLinear = false;
+    private bool showLogarithmic = false;
+    private bool shownLogN = false;
+    private bool showTwoToN = false;
+    private bool showFactorial = false;
+
+    private static List<string> labels = CreateData<string>(ToString, xLimit);
+    private static List<double> quadratic = CreateData(Square, xLimit);
+    private static List<double> cubic = CreateData(Cube, xLimit);
+    private static List<double> linear = CreateData(Linear, xLimit);
+    private static List<double> logN = CreateData(LogN, xLimit);
+    private static List<double> nLogN = CreateData(NLogN, xLimit);
+    private static List<double> twoToN = CreateData(TwoToN, xLimit);
+    private static List<double> factorial = CreateFactorialData(xLimit);
+
+    // private Options options = new Options() { Width = width, Height = height };
+    private Options options = new Options();
 
     private void AddDataPoint()
     {
-        int xValue = labels.Count + 1;
-        int yValue = xValue * xValue;
-        labels.Add(xValue.ToString());
-        growth.Add(yValue);
+        int next = labels.Count + 1;
+        labels.Add(next.ToString());
+        quadratic.Add(Square(next));
+        cubic.Add(Cube(next));
+        linear.Add(Linear(next));
+        logN.Add(LogN(next));
+        nLogN.Add(NLogN(next));
+        twoToN.Add(TwoToN(next));
+        factorial.Add(Factorial(factorial[next-2], next));
     }
 
     private void RemoveDataPoint()
     {
-        if (labels.Count > 0)
+        if (labels.Count > 2)
         {
-            labels.RemoveAt(labels.Count - 1);
-            growth.RemoveAt(growth.Count - 1);
+            int end = labels.Count - 1;
+            labels.RemoveAt(end);
+            quadratic.RemoveAt(end);
+            linear.RemoveAt(end);
+            logN.RemoveAt(end);
+            nLogN.RemoveAt(end);
+            twoToN.RemoveAt(end);
+            factorial.RemoveAt(end);
+            cubic.RemoveAt(end);
         }
+    }
+
+    static double LogN(int n) => Math.Log10(n);
+    static double Linear(int n) => n;
+    static double NLogN(int n) => n * Math.Log10(n);
+    static double Square(int n) => n * n;
+    static double Cube(int n) => n * n * n;
+    static double TwoToN(int n) => Math.Pow(2, n);
+    static double Factorial(double last, int n) => last * n;
+    static string ToString(int n) => n.ToString();
+
+    delegate T NextData<T>(int n);
+
+    private static List<T> CreateData<T>(NextData<T> generator, int n) 
+    {
+        List<T> data = new List<T>();
+        for(int i = 1; i <= n; i++) data.Add(generator(i));
+        return data;
+    }
+
+    private static List<double> CreateFactorialData(int n)
+    {
+        List<double> data = new List<double>() { 1 };
+        for(int i = 1; i < n; i++) data.Add(i * data[i-1]);
+        return data;
     }
 }
 

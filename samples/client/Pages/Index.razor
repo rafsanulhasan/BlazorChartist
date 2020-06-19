@@ -15,21 +15,25 @@
     <div class="col-md-12 col-lg-8">
         <div class="row">
             <Chart Type="ChartType.Line" Labels="@labels" Options="@options" class="ct-chart ct-minor-sixth">
-                @if (showQuadratic)
+                @if (showLogarithmic)
                 {
-                    <Series Name="Quadratic Complexity" Values="@quadratic" />
+                    <Series Name="Logarithmic Complexity" Values="@logN" />
                 }
                 @if (showLinear)
                 {
                     <Series Name="Linear Complexity" Values="@linear" />
                 }
-                @if (showLogarithmic)
-                {
-                    <Series Name="Logarithmic Complexity" Values="@logN" />
-                }
                 @if (shownLogN)
                 {
                     <Series Name="nLogN Complexity" Values="@nLogN" />
+                }
+                @if (showQuadratic)
+                {
+                    <Series Name="Quadratic Complexity" Values="@quadratic" />
+                }
+                @if (showCubic)
+                {
+                    <Series Name="Cubic Complexity" Values="@cubic" />
                 }
                 @if (showTwoToN)
                 {
@@ -39,55 +43,76 @@
                 {
                     <Series Name="2^n Complexity" Values="@factorial" />
                 }
-                @if (showCubic)
-                {
-                    <Series Name="Cubic Complexity" Values="@cubic" />
-                }
             </Chart>
         </div>
         <div class="row">
-            <button class="btn btn-warning" @onclick="RemoveDataPoint">Remove Data Point</button> &nbsp;
-            <button class="btn btn-primary" @onclick="AddDataPoint">Add Data Point</button>
+            <div class="col-md-12 col-lg-4">
+                <button class="btn btn-secondary btn-block" @onclick="RemoveDataPoint">Remove Data Point</button> &nbsp;
+            </div>
+            <div class="col-md-12 col-lg-4">
+                <button class="btn btn-primary btn-block" @onclick="AddDataPoint">Add Data Point</button>
+            </div>
+            <div class="col-md-12 col-lg-4">
+                <button class="btn btn-info btn-block" @onclick="Reset">Reset</button>
+            </div>
         </div>
     </div>
 </div>
 
 @code {
     private const int xLimit = 10;
-    private const int width = 700;
-    private const int height = 700;
+
+    private static double logNScale = 1.0;
+    private static double linearScale = 10.0;
+    private static double nLogNScale = 1.0;
+    private static double quadraticScale = 1.0;
+    private static double cubicScale = 0.005;
+    private static double twoToNScale = 1.0;
+    private static double factorialScale = 1.0;
+
 
     private bool showQuadratic = true;
     private bool showCubic = false;
-    private bool showLinear = false;
-    private bool showLogarithmic = false;
-    private bool shownLogN = false;
+    private bool showLinear = true;
+    private bool showLogarithmic = true;
+    private bool shownLogN = true;
     private bool showTwoToN = false;
     private bool showFactorial = false;
 
-    private static List<string> labels = CreateData<string>(ToString, xLimit);
-    private static List<double> quadratic = CreateData(Square, xLimit);
-    private static List<double> cubic = CreateData(Cube, xLimit);
-    private static List<double> linear = CreateData(Linear, xLimit);
-    private static List<double> logN = CreateData(LogN, xLimit);
-    private static List<double> nLogN = CreateData(NLogN, xLimit);
-    private static List<double> twoToN = CreateData(TwoToN, xLimit);
-    private static List<double> factorial = CreateFactorialData(xLimit);
+    private static List<string> labels = CreateData<string>(ToString, xLimit, 1.0);
+    private static List<double> quadratic = CreateData(Square, xLimit, quadraticScale);
+    private static List<double> cubic = CreateData(Cube, xLimit, cubicScale);
+    private static List<double> linear = CreateData(Linear, xLimit, linearScale);
+    private static List<double> logN = CreateData(LogN, xLimit, logNScale);
+    private static List<double> nLogN = CreateData(NLogN, xLimit, nLogNScale);
+    private static List<double> twoToN = CreateData(TwoToN, xLimit, twoToNScale);
+    private static List<double> factorial = CreateFactorialData(xLimit, factorialScale);
 
-    // private Options options = new Options() { Width = width, Height = height };
     private Options options = new Options();
+
+    private void Reset()
+    {
+        labels = CreateData<string>(ToString, xLimit, 1.0);
+        quadratic = CreateData(Square, xLimit, quadraticScale);
+        cubic = CreateData(Cube, xLimit, cubicScale);
+        linear = CreateData(Linear, xLimit, linearScale);
+        logN = CreateData(LogN, xLimit, logNScale);
+        nLogN = CreateData(NLogN, xLimit, nLogNScale);
+        twoToN = CreateData(TwoToN, xLimit, twoToNScale);
+        factorial = CreateFactorialData(xLimit, factorialScale);
+    }
 
     private void AddDataPoint()
     {
         int next = labels.Count + 1;
         labels.Add(next.ToString());
-        quadratic.Add(Square(next));
-        cubic.Add(Cube(next));
-        linear.Add(Linear(next));
-        logN.Add(LogN(next));
-        nLogN.Add(NLogN(next));
-        twoToN.Add(TwoToN(next));
-        factorial.Add(Factorial(factorial[next-2], next));
+        quadratic.Add(Square(next, quadraticScale));
+        cubic.Add(Cube(next, cubicScale));
+        linear.Add(Linear(next, linearScale));
+        logN.Add(LogN(next, logNScale));
+        nLogN.Add(NLogN(next, nLogNScale));
+        twoToN.Add(TwoToN(next, twoToNScale));
+        factorial.Add(Factorial(factorial[next-2], next, factorialScale));
     }
 
     private void RemoveDataPoint()
@@ -106,28 +131,28 @@
         }
     }
 
-    static double LogN(int n) => Math.Log10(n);
-    static double Linear(int n) => n;
-    static double NLogN(int n) => n * Math.Log10(n);
-    static double Square(int n) => n * n;
-    static double Cube(int n) => n * n * n;
-    static double TwoToN(int n) => Math.Pow(2, n);
-    static double Factorial(double last, int n) => last * n;
-    static string ToString(int n) => n.ToString();
+    static double LogN(int n, double scale) => scale *Math.Log10(n);
+    static double Linear(int n, double scale) => scale * n;
+    static double NLogN(int n, double scale) => scale * n * Math.Log10(n);
+    static double Square(int n, double scale) => scale * n * n;
+    static double Cube(int n, double scale) => scale * n * n * n;
+    static double TwoToN(int n, double scale) => scale * Math.Pow(2, n);
+    static double Factorial(double last, int n, double scale) => scale * last * n;
+    static string ToString(int n, double scale) => n.ToString();
 
-    delegate T NextData<T>(int n);
+    delegate T NextData<T>(int n, double scale);
 
-    private static List<T> CreateData<T>(NextData<T> generator, int n) 
+    private static List<T> CreateData<T>(NextData<T> generator, int n, double scale) 
     {
         List<T> data = new List<T>();
-        for(int i = 1; i <= n; i++) data.Add(generator(i));
+        for(int i = 1; i <= n; i++) data.Add(generator(i, scale));
         return data;
     }
 
-    private static List<double> CreateFactorialData(int n)
+    private static List<double> CreateFactorialData(int n, double scale)
     {
         List<double> data = new List<double>() { 1 };
-        for(int i = 1; i < n; i++) data.Add(i * data[i-1]);
+        for(int i = 1; i < n; i++) data.Add(scale * i * data[i-1]);
         return data;
     }
 }

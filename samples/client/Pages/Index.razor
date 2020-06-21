@@ -3,157 +3,98 @@
 <h1>Asymptotic Behaviour</h1>
 <div class="row">
     <div class="col-md-12 col-lg-4">
-        <input type="checkbox" @bind="showLogarithmic" /> Show Logarithmic &nbsp;
-        <input type="checkbox" @bind="showLinear" /> Show Linear &nbsp;
-        <input type="checkbox" @bind="shownLogN" /> Show nLog(n) &nbsp;
-        <input type="checkbox" @bind="showQuadratic" /> Show Quadratic &nbsp; 
-        <input type="checkbox" @bind="showCubic" /> Show Cubic &nbsp;
-        <input type="checkbox" @bind="showTwoToN" /> Show 2^n &nbsp; 
-        <input type="checkbox" @bind="showFactorial" /> Show Factorial &nbsp;
+        <input type="checkbox" @bind="logN.Show" /> Show Logarithmic &nbsp;
+        <input type="checkbox" @bind="linear.Show" /> Show Linear &nbsp;
+        <input type="checkbox" @bind="nLogN.Show" /> Show nLog(n) &nbsp;
+        <input type="checkbox" @bind="quadratic.Show" /> Show Quadratic &nbsp; 
+        <input type="checkbox" @bind="cubic.Show" /> Show Cubic &nbsp;
+        <input type="checkbox" @bind="twoToN.Show" /> Show 2^n &nbsp; 
+        <input type="checkbox" @bind="factorial.Show" /> Show Factorial &nbsp;
         <br />
     </div>
     <div class="col-md-12 col-lg-8">
         <div class="row">
-            <Chart Type="ChartType.Line" Labels="@labels" Options="@options" class="ct-chart ct-minor-sixth">
-                @if (showLogarithmic)
+            <Chart Type="ChartType.Line" Labels="@labels.Values" Options="@options" class="ct-chart ct-minor-sixth">
+                @if (logN.Show)
                 {
-                    <Series Name="Logarithmic Complexity" Values="@logN" />
+                    <Series Name="Logarithmic Complexity" Values="@logN.Values" />
                 }
-                @if (showLinear)
+                @if (linear.Show)
                 {
-                    <Series Name="Linear Complexity" Values="@linear" />
+                    <Series Name="Linear Complexity" Values="@linear.Values" />
                 }
-                @if (shownLogN)
+                @if (nLogN.Show)
                 {
-                    <Series Name="nLogN Complexity" Values="@nLogN" />
+                    <Series Name="nLogN Complexity" Values="@nLogN.Values" />
                 }
-                @if (showQuadratic)
+                @if (quadratic.Show)
                 {
-                    <Series Name="Quadratic Complexity" Values="@quadratic" />
+                    <Series Name="Quadratic Complexity" Values="@quadratic.Values" />
                 }
-                @if (showCubic)
+                @if (cubic.Show)
                 {
-                    <Series Name="Cubic Complexity" Values="@cubic" />
+                    <Series Name="Cubic Complexity" Values="@cubic.Values" />
                 }
-                @if (showTwoToN)
+                @if (twoToN.Show)
                 {
-                    <Series Name="2^n Complexity" Values="@twoToN" />
+                    <Series Name="2^n Complexity" Values="@twoToN.Values" />
                 }
-                @if (showFactorial)
+                @if (factorial.Show)
                 {
-                    <Series Name="2^n Complexity" Values="@factorial" />
+                    <Series Name="2^n Complexity" Values="@factorial.Values" />
                 }
             </Chart>
         </div>
         <div class="row">
-            <div class="col-md-12 col-lg-4">
-                <button class="btn btn-secondary btn-block" @onclick="RemoveDataPoint">Remove Data Point</button> &nbsp;
-            </div>
-            <div class="col-md-12 col-lg-4">
-                <button class="btn btn-primary btn-block" @onclick="AddDataPoint">Add Data Point</button>
-            </div>
-            <div class="col-md-12 col-lg-4">
-                <button class="btn btn-info btn-block" @onclick="Reset">Reset</button>
-            </div>
+            <input type="range" class="custom-range" min="2" max="150" @bind="xLimit" id="customRange" @oninput="Update">
         </div>
     </div>
 </div>
 
 @code {
-    private const int xLimit = 10;
+    private static int xLimit = 10;
 
-    private static double logNScale = 1.0;
-    private static double linearScale = 1.0;
-    private static double nLogNScale = 1.0;
-    private static double quadraticScale = 1.0;
-    private static double cubicScale = 1.0;
-    private static double twoToNScale = 1.0;
-    private static double factorialScale = 1.0;
-
-
-    private bool showQuadratic = true;
-    private bool showCubic = false;
-    private bool showLinear = true;
-    private bool showLogarithmic = true;
-    private bool shownLogN = true;
-    private bool showTwoToN = false;
-    private bool showFactorial = false;
-
-    private static List<string> labels = CreateData<string>(ToString, xLimit, 1.0);
-    private static List<double> quadratic = CreateData(Square, xLimit, quadraticScale);
-    private static List<double> cubic = CreateData(Cube, xLimit, cubicScale);
-    private static List<double> linear = CreateData(Linear, xLimit, linearScale);
-    private static List<double> logN = CreateData(LogN, xLimit, logNScale);
-    private static List<double> nLogN = CreateData(NLogN, xLimit, nLogNScale);
-    private static List<double> twoToN = CreateData(TwoToN, xLimit, twoToNScale);
-    private static List<double> factorial = CreateFactorialData(xLimit, factorialScale);
+    GenericModel<string> labels = new GenericModel<string>("Size of n", ToString, xLimit);
+    GenericModel<double> logN = new GenericModel<double>("Log(n) Complexity", LogN, xLimit);
+    GenericModel<double> linear = new GenericModel<double>("Linear Complexity", Linear, xLimit);
+    GenericModel<double> nLogN = new GenericModel<double>("n Log(n) Complexity", NLogN, xLimit);
+    GenericModel<double> quadratic = new GenericModel<double>("Quadratic Complexity", Quadratic, xLimit); 
+    GenericModel<double> cubic = new GenericModel<double>("Cubic Complexity", Cubic, xLimit);
+    GenericModel<double> twoToN = new GenericModel<double>("2^n Complexity", TwoToN, xLimit);
+    GenericModel<double> factorial = new GenericModel<double>("Factorial Complexity", Factorial, xLimit);
 
     private Options options = new Options();
 
     private void Reset()
     {
-        labels = CreateData<string>(ToString, xLimit, 1.0);
-        quadratic = CreateData(Square, xLimit, quadraticScale);
-        cubic = CreateData(Cube, xLimit, cubicScale);
-        linear = CreateData(Linear, xLimit, linearScale);
-        logN = CreateData(LogN, xLimit, logNScale);
-        nLogN = CreateData(NLogN, xLimit, nLogNScale);
-        twoToN = CreateData(TwoToN, xLimit, twoToNScale);
-        factorial = CreateFactorialData(xLimit, factorialScale);
-    }
-
-    private void AddDataPoint()
-    {
-        int next = labels.Count + 1;
-        labels.Add(next.ToString());
-        quadratic.Add(Square(next, quadraticScale));
-        cubic.Add(Cube(next, cubicScale));
-        linear.Add(Linear(next, linearScale));
-        logN.Add(LogN(next, logNScale));
-        nLogN.Add(NLogN(next, nLogNScale));
-        twoToN.Add(TwoToN(next, twoToNScale));
-        factorial.Add(Factorial(factorial[next-2], next, factorialScale));
-    }
-
-    private void RemoveDataPoint()
-    {
-        if (labels.Count > 2)
-        {
-            int end = labels.Count - 1;
-            labels.RemoveAt(end);
-            quadratic.RemoveAt(end);
-            linear.RemoveAt(end);
-            logN.RemoveAt(end);
-            nLogN.RemoveAt(end);
-            twoToN.RemoveAt(end);
-            factorial.RemoveAt(end);
-            cubic.RemoveAt(end);
-        }
+        labels.Reset(ToString, xLimit);
+        quadratic.Reset(Quadratic, xLimit);
+        cubic.Reset(Cubic, xLimit);
+        linear.Reset(Linear, xLimit);
+        logN.Reset(LogN, xLimit);
+        nLogN.Reset(NLogN, xLimit);
+        twoToN.Reset(TwoToN, xLimit);
+        factorial.Reset(Factorial, xLimit);
     }
 
     static double LogN(int n, double scale) => scale *Math.Log10(n);
     static double Linear(int n, double scale) => scale * n;
     static double NLogN(int n, double scale) => scale * n * Math.Log10(n);
-    static double Square(int n, double scale) => scale * n * n;
-    static double Cube(int n, double scale) => scale * n * n * n;
+    static double Quadratic(int n, double scale) => scale * n * n;
+    static double Cubic(int n, double scale) => scale * n * n * n;
     static double TwoToN(int n, double scale) => scale * Math.Pow(2, n);
-    static double Factorial(double last, int n, double scale) => scale * last * n;
+    static double Factorial(int n, double scale) => scale * (n - 1) * n;
     static string ToString(int n, double scale) => n.ToString();
 
-    delegate T NextData<T>(int n, double scale);
-
-    private static List<T> CreateData<T>(NextData<T> generator, int n, double scale) 
+    private void Update()
     {
-        List<T> data = new List<T>();
-        for(int i = 1; i <= n; i++) data.Add(generator(i, scale));
-        return data;
-    }
-
-    private static List<double> CreateFactorialData(int n, double scale)
-    {
-        List<double> data = new List<double>() { 1 };
-        for(int i = 1; i < n; i++) data.Add(scale * i * data[i-1]);
-        return data;
+        labels.Update(ToString, xLimit);
+        logN.Update(LogN, xLimit);
+        nLogN.Update(NLogN, xLimit);
+        linear.Update(Linear, xLimit);
+        quadratic.Update(Quadratic, xLimit);
+        cubic.Update(Cubic, xLimit);
+        twoToN.Update(TwoToN, xLimit);
+        factorial.Update(Factorial, xLimit);
     }
 }
-

@@ -7,6 +7,9 @@ using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Blazorise;
+using Blazorise.Bootstrap;
+using Blazorise.Icons.FontAwesome;
 
 namespace Client
 {
@@ -15,11 +18,26 @@ namespace Client
         public static async Task Main(string[] args)
         {
             var builder = WebAssemblyHostBuilder.CreateDefault(args);
+
+            builder.Services
+            .AddBlazorise(options =>
+            {
+                options.ChangeTextOnKeyPress = true;
+            })
+            .AddBootstrapProviders()
+            .AddFontAwesomeIcons();
+
+            builder.Services
+                .AddTransient(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
+
             builder.RootComponents.Add<App>("app");
+            var host = builder.Build();
 
-            builder.Services.AddTransient(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
+            host.Services
+                .UseBootstrapProviders()
+                .UseFontAwesomeIcons();
 
-            await builder.Build().RunAsync();
+            await host.RunAsync();
         }
     }
 }

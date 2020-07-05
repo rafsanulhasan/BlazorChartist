@@ -9,11 +9,12 @@ namespace Client.Data
         public double Scale { get; set; } = 1.0;
         public bool Show { get; set; }
 
-        public GenericModel(string name, NextData generator, int n)
+        public GenericModel(string name, NextData generator, int n, bool show = false)
         {
             Name = name;
             Values = new List<T>();
             Initialize(generator, n);
+            Show = show;
         }
 
         public delegate T NextData(int n, double scale);
@@ -44,8 +45,7 @@ namespace Client.Data
 
         public void Update(NextData generator, int n)
         {
-            Values.Clear();
-            Initialize(generator, n);
+            Reset(generator, n);
         }
     }
 }

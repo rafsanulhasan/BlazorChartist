@@ -8,6 +8,7 @@ namespace Client.Data
         public List<T> Values { get; private set; }
         public double Scale { get; set; } = 1.0;
         public bool Show { get; set; }
+        public int Step { get; set; } = 1;
 
         public GenericModel(string name, NextData generator, int n, bool show = false)
         {
@@ -21,7 +22,8 @@ namespace Client.Data
 
         private void Initialize(NextData generator, int n)
         {
-            for (int i = 1; i <= n; i++)
+            Step = (n / 100) + 1;
+            for (int i = 1; i <= n; i+=Step)
             {
                 Values.Add(generator(i, Scale));
             }

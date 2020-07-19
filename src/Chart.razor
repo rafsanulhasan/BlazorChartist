@@ -1,6 +1,4 @@
-<div @ref="elem" class="ct-chart" @attributes="@ExtraAttributes">
-    TODO: Implement chartist.js creation of a chart
-</div>
+<div @ref="elem" class="ct-chart" @attributes="@ExtraAttributes"></div>
 
 <CascadingValue Value="@this">
     @ChildContent
@@ -15,13 +13,14 @@
     [Parameter] public ChartType Type {get; set; }
     [Parameter] public ChartData Data { get; set; } = new ChartData();
     [Parameter] public IEnumerable<string> Labels { get; set; }
+    [Parameter] public Options Options { get; set; }
     [Parameter(CaptureUnmatchedValues = true)] public Dictionary<string, object> ExtraAttributes { get; set; }
   
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)
         {
-            await JS.InvokeVoidAsync("BlazorChartist.createChart", elem, Type.ToString());
+            await JS.InvokeVoidAsync("BlazorChartist.createChart", elem, Type.ToString(), Options);
         }
 
         if (Labels != null)
@@ -29,6 +28,6 @@
             Data.Labels = Labels;
         }
 
-        await JS.InvokeVoidAsync("BlazorChartist.updateChart", elem, Data);
+        await JS.InvokeVoidAsync("BlazorChartist.updateChart", elem, Data, Options);
     }
 }

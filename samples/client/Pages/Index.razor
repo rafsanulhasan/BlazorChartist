@@ -1,6 +1,6 @@
 ﻿@page "/"
 
-<h1>Asymptotic Behaviour</h1>
+<h1 class="Display-3">Asymptotic Relationships</h1>
 <div class="row">
     <div class="col-md-12 col-lg-4">
         <div class="row">
@@ -17,12 +17,12 @@
                         </div>
                     </div>
                     <div class="card-body">
-                        <form class="form-inline flex-fill">
+                        <form class="flex-fill">
                             <div class="row">
                                 <div class="col-sm-8">
                                 @if (showLogNControls)
                                 {
-                                    <div>f(n) = log(<input class="form-control form-control-sm w-25" type="number" placeholder="" @bind="lognA">n)</div>
+                                    <div>f(n) = log(<input class="form-control form-control-sm" type="number" placeholder="" @bind="lognA">n)</div>
                                 }
                                 else
                                 {
@@ -30,7 +30,7 @@
                                 }
                                 </div>
                                 <div class="col-sm-4">
-                                    scale:<input class="form-control form-control-sm w-50" type="number" placeholder="" @bind="logN.Scale" min="0.0000001">
+                                    scale:<input class="form-control form-control-sm" type="number" placeholder="" @bind="logN.Scale" min="0.0000001">
                                 </div>
                             </div>
                         </form>
@@ -52,7 +52,7 @@
                         </div>
                     </div>
                     <div class="card-body">
-                        <form class="form-inline flex-fill">
+                        <form class="flex-fill">
                             <div class="row">
                                 <div class="col-sm-8">
                                 @if (showLinearControls)
@@ -66,7 +66,7 @@
                                 }
                                 </div>
                                 <div class="col-sm-4">
-                                    scale:<input class="form-control form-control-sm w-50" type="number" placeholder="" @bind="linear.Scale" min="0.0000001">
+                                    scale:<input class="form-control form-control-sm" type="number" placeholder="" @bind="linear.Scale" min="0.0000001">
                                 </div>
                             </div>
                         </form>
@@ -88,12 +88,12 @@
                         </div>
                     </div>
                     <div class="card-body">
-                        <form class="form-inline flex-fill">
+                        <form class="flex-fill">
                             <div class="row">
                                 <div class="col-sm-8">
                                     @if (showNLogNControls)
                                     {
-                                        <div>f(n) = nlog(<input class="form-control form-control-sm w-25" type="number" placeholder="" @bind="nLogNA">n)</div>
+                                        <div>f(n) = nlog(<input class="form-control form-control-sm" type="number" placeholder="" @bind="nLogNA">n)</div>
 
                                     }
                                     else
@@ -102,7 +102,7 @@
                                     }
                                 </div>
                                 <div class="col-sm-4">
-                                    scale:<input class="form-control form-control-sm w-50" type="number" placeholder="" @bind="nLogN.Scale" min="0.0000001">
+                                    scale:<input class="form-control form-control-sm" type="number" placeholder="" @bind="nLogN.Scale" min="0.0000001">
                                 </div>
                             </div>
                         </form>
@@ -124,14 +124,14 @@
                         </div>
                     </div>
                     <div class="card-body">
-                        <form class="form-inline flex-fill">
+                        <form class="flex-fill">
                             <div class="row">
                                 <div class="col-sm-8">
                                     @if (showQuadraticControls)
                                     {
-                                        <div>f(n) = <input class="form-control form-control-sm w-25" type="number" placeholder="" @bind="quadraticA">n<sup>2</sup> + 
-                                        <input class="form-control form-control-sm w-25" type="number" placeholder="" @bind="quadraticB">n +
-                                        <input class="form-control form-control-sm w-25" type="number" placeholder="" @bind="quadraticC"></div>
+                                        <div>f(n) = <input class="form-control form-control-sm" type="number" placeholder="" @bind="quadraticA">n<sup>2</sup> + 
+                                        <input class="form-control form-control-sm" type="number" placeholder="" @bind="quadraticB">n +
+                                        <input class="form-control form-control-sm" type="number" placeholder="" @bind="quadraticC"></div>
                                     }
                                     else
                                     {
@@ -139,7 +139,7 @@
                                     }
                                 </div>
                                 <div class="col-sm-4">
-                                    scale:<input class="form-control form-control-sm w-50" type="number" placeholder="" @bind="quadratic.Scale" min="0.0000001">
+                                    scale:<input class="form-control form-control-sm" type="number" placeholder="" @bind="quadratic.Scale" min="0.0000001">
                                 </div>
                             </div>
                         </form>
@@ -161,15 +161,15 @@
                         </div>
                     </div>
                     <div class="card-body">
-                        <form class="form-inline flex-fill">
+                        <form class="flex-fill">
                             <div class="row">
                                 <div class="col-sm-8">
                                     @if (showCubicControls)
                                     {
-                                        <div>f(n) = <input class="form-control form-control-sm w-25" type="number" placeholder="" @bind="cubicA">n<sup>3</sup> +
-                                        <input class="form-control form-control-sm w-25" type="number" placeholder="" @bind="cubicB">n<sup>2</sup> + 
-                                        <input class="form-control form-control-sm w-25" type="number" placeholder="" @bind="cubicC">n +
-                                        <input class="form-control form-control-sm w-25" type="number" placeholder="" @bind="cubicD"></div>
+                                        <div>f(n) = <input class="form-control form-control-sm" type="number" placeholder="" @bind="cubicA">n<sup>3</sup> +
+                                        <input class="form-control form-control-sm" type="number" placeholder="" @bind="cubicB">n<sup>2</sup> + 
+                                        <input class="form-control form-control-sm" type="number" placeholder="" @bind="cubicC">n +
+                                        <input class="form-control form-control-sm" type="number" placeholder="" @bind="cubicD"></div>
                                     }
                                     else
                                     {
@@ -177,7 +177,48 @@
                                     }
                                 </div>
                                 <div class="col-sm-4">
-                                    scale:<input class="form-control form-control-sm w-50" type="number" placeholder="" @bind="cubic.Scale" min="0.0000001">
+                                    scale:<input class="form-control form-control-sm" type="number" placeholder="" @bind="cubic.Scale" min="0.0000001">
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="card" style="margin-bottom: 10px;">
+                    <div class="card-header">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <input type="checkbox" @bind="quartic.Show" /> Show Quartic
+                            </div>
+                            <div class="col-sm-6">
+                                <input type="checkbox" @bind="showQuarticControls"> Extra Controls
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <form class="flex-fill">
+                            <div class="row">
+                                <div class="col-sm-8">
+                                    @if (showQuarticControls)
+                                    {
+                                        <div>f(n) = <input class="form-control form-control-sm" type="number" placeholder="" @bind="quarticA">n<sup>4</sup> +
+                                        <input class="form-control form-control-sm" type="number" placeholder="" @bind="quarticB">n<sup>3</sup> + 
+                                        <input class="form-control form-control-sm" type="number" placeholder="" @bind="quarticC">n<sup>2</sup> + 
+                                        <input class="form-control form-control-sm" type="number" placeholder="" @bind="quarticD">n +
+                                        <input class="form-control form-control-sm" type="number" placeholder="" @bind="quarticE"></div>
+                                    }
+                                    else
+                                    {
+                                        @:f(n) = n<sup>4</sup>
+                                    }
+                                </div>
+                                <div class="col-sm-4">
+                                    scale:<input class="form-control form-control-sm" type="number" placeholder="" @bind="quartic.Scale" min="0.0000001">
                                 </div>
                             </div>
                         </form>
@@ -192,13 +233,13 @@
                         <input type="checkbox" @bind="twoToN.Show" /> Show 2^n
                     </div>
                     <div class="card-body">
-                        <form class="form-inline flex-fill">
+                        <form class="flex-fill">
                             <div class="row">
                                 <div class="col-sm-8">
                                     f(n) = 2<sup>n</sup> 
                                 </div>
                                 <div class="col-sm-4">
-                                    scale:<input class="form-control form-control-sm w-50" type="number" placeholder="" @bind="twoToN.Scale" min="0.00001">
+                                    scale:<input class="form-control form-control-sm" type="number" placeholder="" @bind="twoToN.Scale" min="0.00001">
                                 </div>
                             </div>
                         </form>
@@ -230,6 +271,10 @@
                 {
                     <Series Name="Cubic Complexity" Values="@cubic.Values" />
                 }
+                @if (quartic.Show)
+                {
+                    <Series Name="Quartic Complexity" Values="@quartic.Values" />
+                }
                 @if (twoToN.Show)
                 {
                     <Series Name="2^n Complexity" Values="@twoToN.Values" />
@@ -237,18 +282,18 @@
             </Chart>
         </div>
         <div class="row">
-            <input type="range" 
-                class="custom-range" 
-                min="5" 
-                max="1000"
-                @bind="xLimit" id="customRange" 
-                @bind:event="oninput">
-        </div>
-        <div class="row">
-            <p>@Update()</p>
+            <div class="col-sm-12">
+                <form>
+                    <div class="form-group">
+                        <label for="xLimit">Size of n @Update()</label>
+                        <input type="range" class="form-control-range" id="xLimit" @bind="xLimit" @bind:event="oninput" min="5" max="@CalculateMaximum()">
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
 </div>
+
 
 @code {
     static int xLimit = 10;
@@ -264,19 +309,27 @@
     static double cubicB = 0;
     static double cubicC = 0;
     static double cubicD = 0;
+    static double quarticA = 1;
+    static double quarticB = 0;
+    static double quarticC = 0;
+    static double quarticD = 0;
+    static double quarticE = 0;
 
     static bool showLogNControls = false;
     static bool showLinearControls = false;
     static bool showNLogNControls = false;
     static bool showQuadraticControls = false;
     static bool showCubicControls = false;
+    static bool showQuarticControls = false;
 
     GenericModel<string> labels = new GenericModel<string>("Size of n", ToString, xLimit);
-    GenericModel<double> logN = new GenericModel<double>("Log(n) Complexity", LogN, xLimit, true);
+    GenericModel<double> logN = new GenericModel<double>("Log(n) Complexity", LogN, xLimit);
     GenericModel<double> linear = new GenericModel<double>("Linear Complexity", Linear, xLimit, true);
     GenericModel<double> nLogN = new GenericModel<double>("n Log(n) Complexity", NLogN, xLimit, true);
     GenericModel<double> quadratic = new GenericModel<double>("Quadratic Complexity", Quadratic, xLimit); 
     GenericModel<double> cubic = new GenericModel<double>("Cubic Complexity", Cubic, xLimit);
+    GenericModel<double> quartic = new GenericModel<double>("Quartic Complexity", Quartic, xLimit);
+
     GenericModel<double> twoToN = new GenericModel<double>("2^n Complexity", TwoToN, xLimit);
 
     private Options options = new Options();
@@ -284,11 +337,12 @@
     private void Reset()
     {
         labels.Reset(ToString, xLimit);
+        logN.Reset(LogN, xLimit);
+        linear.Reset(Linear, xLimit);
+        nLogN.Reset(NLogN, xLimit);
         quadratic.Reset(Quadratic, xLimit);
         cubic.Reset(Cubic, xLimit);
-        linear.Reset(Linear, xLimit);
-        logN.Reset(LogN, xLimit);
-        nLogN.Reset(NLogN, xLimit);
+        quartic.Reset(Quartic, xLimit);
         twoToN.Reset(TwoToN, xLimit);
     }
 
@@ -296,21 +350,53 @@
     static double Linear(int n, double scale) => scale * (linearA * n + linearB);
     static double NLogN(int n, double scale) => scale * n * Math.Log10(nLogNA * n);
     static double Quadratic(int n, double scale) => scale * (quadraticA * n * n + quadraticB * n + quadraticC);
-    static double Cubic(int n, double scale) => scale * n * n * n;
+    static double Cubic(int n, double scale) => scale * (cubicA * n * n * n + cubicB * n * n + cubicC * n + cubicD);
+    static double Quartic(int n, double scale) => scale * (quarticA * n * n * n * n + quarticB * n * n * n + quarticC * n * n + quarticD * n + quarticE);
     static double TwoToN(int n, double scale) => scale * Math.Pow(2, n);
     static string ToString(int n, double scale) => n.ToString();
+
+    private int CalculateMaximum()
+    {
+        if (xLimit < 1000) 
+        {
+            return 100 + (int)(100 * xLimit/100);
+        }
+        else if(xLimit < 10000)
+        {
+            return 1000 + (int)(1000 * xLimit/1000);
+        }
+        else if (xLimit < 100000)
+        {
+            return 100000 + (int)(100000 * xLimit/100000);
+        }
+        else if (xLimit < 1000000)
+        {
+            return 1000000 + (int)(1000000 * xLimit/1000000);
+        }
+        else if (xLimit < 10000000)
+        {
+            return 10000000 + (int)(10000000 * xLimit/10000000);
+        }
+        else if (xLimit < 100000000)
+        {
+            return 100000000 + (int)(100000000 * xLimit/100000000);
+        }
+        return 100000000 + (int)(100000000 * xLimit/100000000);
+
+    }
 
     private string Update()
     {
         string message = xLimit.ToString();
         labels.Update(ToString, xLimit);
 
-        logN.Update(LogN, xLimit);
-        nLogN.Update(NLogN, xLimit);
-        linear.Update(Linear, xLimit);
-        quadratic.Update(Quadratic, xLimit);
-        cubic.Update(Cubic, xLimit);
-        if (xLimit < 998) twoToN.Update(TwoToN, xLimit);
+        if (logN.Show) logN.Update(LogN, xLimit);
+        if (nLogN.Show) nLogN.Update(NLogN, xLimit);
+        if (linear.Show) linear.Update(Linear, xLimit);
+        if (quadratic.Show) quadratic.Update(Quadratic, xLimit);
+        if (cubic.Show) cubic.Update(Cubic, xLimit);
+        if (quartic.Show) quartic.Update(Quartic, xLimit);
+        if (twoToN.Show && xLimit < 998) twoToN.Update(TwoToN, xLimit);
 
         if (xLimit > 100) options.AxisX.ShowLabel = false;
         else options.AxisX.ShowLabel = true;
